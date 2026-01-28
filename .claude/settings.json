@@ -6,11 +6,11 @@
     },
     "review-character": {
       "description": "キャラクター一貫性レビュー - 性格、感情、成長の一貫性をチェック",
-      "prompt": ".claude/skills/review-character/SKILL.mdの指示に従って、指定されたファイル（または全scenes/とcharacters/）のキャラクター一貫性をレビューしてください。特に主人公・蓮の「刀を気軽に抜かない」「サラリーマンを辞めない」という禁則に注意してください。"
+      "prompt": ".claude/skills/review-character/SKILL.mdの指示に従って、指定されたファイル（または全scenes/とcharacters/）のキャラクター一貫性をレビューしてください。特に主人公・蓮の「刀を気軽に抜かない」「元サラリーマンの感覚を捨てない」という禁則に注意してください。"
     },
     "review-knowledge": {
       "description": "読者知識一貫性レビュー - 情報開示タイミングと前提知識をチェック",
-      "prompt": ".claude/skills/review-knowledge/SKILL.mdとstory/reader_knowledge_design.mdを参照し、各シーンでの情報開示が適切かレビューしてください。特に「キラーの正体」「創造主の真実」「マーキングの意味」の開示タイミングに注意してください。"
+      "prompt": ".claude/skills/review-knowledge/SKILL.mdとstory/reader_knowledge_design.mdを参照し、各シーンでの情報開示が適切かレビューしてください。特に「キラーの正体」「創造主たちの真実」「マーキングの意味」の開示タイミングに注意してください。"
     },
     "review-power": {
       "description": "パワーシステム一貫性レビュー - 4つの戦闘システムの整合性をチェック",

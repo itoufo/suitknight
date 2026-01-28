@@ -17,16 +17,16 @@
 
 | # | ファイル | 内容 |
 |---|---------|------|
-| 3 | `world/01_basic_rules.md` | 力の3原則・起源事件・力の序列 |
+| 3 | `world/01_basic_rules.md` | 起源事件・力の序列・例外の存在 |
 | 4 | `world/02_power_system.md` | 4つの戦闘システム概要 |
 | 5 | `world/03_aura_domains.md` | オーラの色と意味・領域の種類と衝突ルール |
 | 6 | `world/04_weapon_release.md` | 武器の段階的覚醒・刀の特殊ルール |
 | 7 | `world/05_magic_system.md` | 魔導書・寿命消費・ロイの例外 |
 | 8 | `world/06_angel_hierarchy.md` | 天使社会と階級・代理戦争 |
 | 9 | `world/07_demon_hierarchy.md` | 悪魔社会と階級・七大罪対応 |
-| 10 | `world/08_creator_mythology.md` | 創造主の正体・死の経緯・マーキング |
+| 10 | `world/08_creator_mythology.md` | 創造主たちの設定・創造主Aの死・マーキング |
 | 11 | `world/09_killer_origin_secret.md` | **【隠し設定】** キラーの真の目的・封印解除条件 |
-| 12 | `world/10_world_geography.md` | 三界の地理・東京の位置づけ |
+| 12 | `world/10_world_geography.md` | 世界の地理・異世界の構造 |
 | 13 | `world/11_human_society.md` | 人間の勢力図・代理戦争・主人公の会社 |
 
 ### 3. キャラクターを知る（`characters/`）
@@ -57,7 +57,7 @@
 
 | # | ファイル | 内容 |
 |---|---------|------|
-| 28 | `themes/core_themes.md` | 核心の問い：「使えない武器を背負い続ける意味」 |
+| 28 | `themes/core_themes.md` | テーマ：抜かない強さ |
 | 29 | `vision/reader_reactions.md` | 想定読者反応・バズるポイント |
 | 30 | `business/timeline.md` | IP展開タイムライン（Web小説→アニメ） |
 | 31 | `business/strategy.md` | 販売戦略・ターゲット層・競合分析 |
