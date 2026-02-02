@@ -27,7 +27,11 @@
 | 10 | `world/08_creator_mythology.md` | 創造主たちの設定・創造主Aの死・マーキング |
 | 11 | `world/09_killer_origin_secret.md` | **【隠し設定】** キラーの真の目的・封印解除条件 |
 | 12 | `world/10_world_geography.md` | 世界の地理・異世界の構造 |
-| 13 | `world/11_human_society.md` | 人間の勢力図・代理戦争・主人公の会社 |
+| 13 | `world/11_human_society.md` | 人間の勢力図・代理戦争・軍事組織詳細 |
+| 13a | `world/history/01_timeline.md` | エルダ年代記（300年の歴史） |
+| 13b | `world/history/02_wars.md` | 主要戦争記録（天魔戦争・代理戦争） |
+| 13c | `world/history/03_politics.md` | 条約と政治史（黙約・裏切り・和平の失敗） |
+| 13d | `world/history/04_historical_figures.md` | 歴史的人物（蓮が参照する戦略家たち） |
 
 ### 3. キャラクターを知る（`characters/`）
 
@@ -36,11 +40,16 @@
 | 14 | `characters/00_naming_chart.md` | 命名規則（人間・天使・悪魔・特殊存在） |
 | 15 | `characters/protagonist.md` | 鷹野蓮（主人公）の全プロファイル |
 | 16 | `characters/killer.md` | キラーの人格・話し方・各フェーズの目的 |
-| 17 | `characters/first_warrior.md` | 神崎凛（最初に出会う女性戦士） |
-| 18 | `characters/roi.md` | 白峰玲央/ロイ（ライバル・魔法使い） |
+| 17 | `characters/humans/independent/02_lynn.md` | Lynn/リン（最初に出会う女性戦士） |
+| 18 | `characters/humans/angel_faction/01_roi.md` | Roi/ロイ（ライバル・魔法使い） |
 | 19 | `characters/michael.md` | ミカエル（大天使・秩序の体現） |
 | 20 | `characters/demon_lord.md` | アスモデウス（最強の悪魔） |
 | 21 | `characters/supporting_cast.md` | サブキャラクター一覧 |
+| 21a | `characters/humans/angel_faction/06_alaric.md` | Alaric/アラリック（軍務卿・守りの天才） |
+| 21b | `characters/humans/angel_faction/07_isolde.md` | Isolde/イゾルデ（前線指揮官・人間の良心） |
+| 21c | `characters/humans/demon_faction/04_fenris.md` | Fenris/フェンリス（賭け師・攻めの天才） |
+| 21d | `characters/humans/demon_faction/05_greta.md` | Greta/グレタ（戦犬・生存の専門家） |
+| 21e | `characters/humans/independent/07_otto.md` | Otto/オットー（書庫番・情報分析の天才） |
 
 ### 4. 物語の設計を読む（`story/`）
 
@@ -94,4 +103,5 @@
 ---
 
 ## 更新履歴
+- 戦記もの拡張：歴史ファイル4本・軍師キャラ5名を読書順に追加
 - 初版作成

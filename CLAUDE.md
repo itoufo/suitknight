@@ -257,9 +257,15 @@
 - 物語構造：`story/` フォルダ
 - テーマ：`themes/core_themes.md`
 - 執筆済みシーン：`scenes/` フォルダ
+- エルダ歴史：`world/history/` フォルダ（年代記・戦争記録・政治史・歴史的人物）
+- 軍師キャラクター：
+  - 天使派：`characters/humans/angel_faction/06_alaric.md`（軍務卿）、`07_isolde.md`（前線指揮官）
+  - 悪魔派：`characters/humans/demon_faction/04_fenris.md`（賭け師）、`05_greta.md`（戦犬）
+  - 独立派：`characters/humans/independent/07_otto.md`（書庫番）
 
 ---
 
 ## 更新履歴
 
+- 2026-02-01：戦記もの拡張（軍事地理・歴史・軍師キャラ・軍事組織・0.1秒戦略分析）
 - 2026-01-29：初版作成
