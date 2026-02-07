@@ -478,6 +478,129 @@
       }
     }
 
+    /* Copy button */
+    .copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      font-family: 'Noto Sans JP', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 12px;
+    }
+
+    .copy-btn:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+      border-color: var(--accent);
+    }
+
+    .copy-btn.copied {
+      color: var(--gold);
+      border-color: var(--gold);
+    }
+
+    .copy-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--bg-card);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      z-index: 200;
+      opacity: 0;
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* Thumbnail gallery */
+    .thumbnails {
+      margin-top: 64px;
+    }
+
+    .thumbnails-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+      color: var(--text-primary);
+      text-align: center;
+    }
+
+    .thumbnail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .thumbnail-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .thumbnail-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: 0 8px 32px rgba(220, 38, 38, 0.2);
+    }
+
+    .thumbnail-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .thumbnail-info {
+      padding: 16px;
+    }
+
+    .thumbnail-episode {
+      font-size: 0.7rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 4px;
+    }
+
+    .thumbnail-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    @media (max-width: 768px) {
+      .thumbnail-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     /* Loading state */
     .loading {
       display: flex;
@@ -529,6 +652,7 @@
 </head>
 <body>
   <div class="ambient"></div>
+  <div class="toast" id="toast"></div>
 
   <div class="scroll-progress">
     <div class="scroll-progress-bar" id="progressBar"></div>
@@ -562,6 +686,15 @@
             </svg>
             設定一覧
           </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Scenes</div>
+          <a class="nav-item" data-file="scenes/ep001_overtime.md">第一話「残業」</a>
+          <a class="nav-item" data-file="scenes/ep002_grey_land.md">第二話「灰色の大地」</a>
+          <a class="nav-item" data-file="scenes/ep003_suit_man.md">第三話「スーツマン」</a>
+          <a class="nav-item" data-file="scenes/ep004_spec_document.md">第四話「仕様書」</a>
+          <a class="nav-item" data-file="scenes/ep005_double_life.md">第五話「二重生活」</a>
         </div>
 
         <div class="nav-section">
@@ -623,12 +756,6 @@
           <a class="nav-item" data-file=".claude/skills/review-knowledge/SKILL.md">読者知識</a>
         </div>
 
-        <div class="nav-section">
-          <div class="nav-section-title">Scenes</div>
-          <div class="nav-item" style="color: var(--text-muted); cursor: default; font-style: italic;">
-            執筆待ち...
-          </div>
-        </div>
       </nav>
     </aside>
 
@@ -643,12 +770,120 @@
     // File content cache
     const fileCache = {};
 
+    // Convert markdown to plain text for posting
+    function markdownToPlainText(md) {
+      return md
+        // Remove h1/h2/h3 markers but keep the text
+        .replace(/^#{1,6}\s+(.+)$/gm, '$1')
+        // Remove bold/italic markers
+        .replace(/\*{1,3}(.+?)\*{1,3}/g, '$1')
+        .replace(/_{1,3}(.+?)_{1,3}/g, '$1')
+        // Convert horizontal rules to blank line
+        .replace(/^---+$/gm, '')
+        // Remove inline code backticks
+        .replace(/`(.+?)`/g, '$1')
+        // Remove link syntax, keep text
+        .replace(/\[(.+?)\]\(.+?\)/g, '$1')
+        // Remove image syntax
+        .replace(/!\[.*?\]\(.+?\)/g, '')
+        // Remove blockquote markers
+        .replace(/^>\s?/gm, '')
+        // Remove list markers
+        .replace(/^[\s]*[-*+]\s+/gm, '')
+        .replace(/^[\s]*\d+\.\s+/gm, '')
+        // Collapse 3+ consecutive blank lines into 2
+        .replace(/\n{4,}/g, '\n\n\n')
+        .trim();
+    }
+
+    // Show toast notification
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    // Copy scene as plain text
+    async function copySceneAsPlainText(filePath) {
+      const text = await loadFile(filePath);
+      const plainText = markdownToPlainText(text);
+      await navigator.clipboard.writeText(plainText);
+      showToast('コピーしました');
+      const btn = document.querySelector('.copy-btn');
+      if (btn) {
+        btn.classList.add('copied');
+        btn.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          コピー済み
+        `;
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            投稿用にコピー
+          `;
+        }, 2000);
+      }
+    }
+
     // Navigation
     const nav = document.getElementById('nav');
     const content = document.getElementById('content');
     const sidebar = document.getElementById('sidebar');
     const menuToggle = document.getElementById('menuToggle');
     const progressBar = document.getElementById('progressBar');
+
+    // Episode thumbnails mapping
+    const episodeThumbnails = [
+      {
+        episode: 'Episode 1',
+        title: '残業',
+        file: 'scenes/ep001_overtime.md',
+        thumbnail: 'generated_imgs/generated-2026-02-06T11-12-42-919Z-k7tm7g.png'
+      },
+      {
+        episode: 'Episode 2',
+        title: '灰色の大地',
+        file: 'scenes/ep002_grey_land.md',
+        thumbnail: 'generated_imgs/generated-2026-02-06T11-12-59-772Z-xnj6ek.png'
+      },
+      {
+        episode: 'Episode 3',
+        title: 'スーツの男',
+        file: 'scenes/ep003_suit_man.md',
+        thumbnail: 'generated_imgs/generated-2026-02-06T11-13-22-791Z-vu7vd2.png'
+      },
+      {
+        episode: 'Episode 4',
+        title: '仕様書',
+        file: 'scenes/ep004_spec_document.md',
+        thumbnail: 'generated_imgs/generated-2026-02-06T11-13-38-637Z-ruoesv.png'
+      },
+      {
+        episode: 'Episode 5',
+        title: '二重生活',
+        file: 'scenes/ep005_double_life.md',
+        thumbnail: 'generated_imgs/generated-2026-02-06T11-14-01-121Z-hip9dt.png'
+      }
+    ];
+
+    // Generate thumbnail cards HTML
+    function generateThumbnailsHTML() {
+      return episodeThumbnails.map(ep => `
+        <div class="thumbnail-card" data-file="${ep.file}">
+          <img src="${ep.thumbnail}" alt="${ep.title}" loading="lazy">
+          <div class="thumbnail-info">
+            <div class="thumbnail-episode">${ep.episode}</div>
+            <div class="thumbnail-title">「${ep.title}」</div>
+          </div>
+        </div>
+      `).join('');
+    }
 
     // Welcome content
     const welcomeHTML = `
@@ -677,6 +912,13 @@
           <div class="stat">
             <div class="stat-value gold">1</div>
             <div class="stat-label">本の刀</div>
+          </div>
+        </div>
+
+        <div class="thumbnails">
+          <h2 class="thumbnails-title">Episodes</h2>
+          <div class="thumbnail-grid">
+            ${generateThumbnailsHTML()}
           </div>
         </div>
       </div>
@@ -728,11 +970,21 @@
       const titleMatch = text.match(/^#\s+(.+)$/m);
       const title = titleMatch ? titleMatch[1] : filePath;
 
+      const isScene = filePath.startsWith('scenes/');
+      const copyBtnHTML = isScene ? `
+            <button class="copy-btn" onclick="copySceneAsPlainText('${filePath}')">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              投稿用にコピー
+            </button>` : '';
+
       content.innerHTML = `
         <article class="article">
           <header class="article-header">
             <span class="article-category">${getCategory(filePath)}</span>
             <h1 class="article-title">${title}</h1>
+            ${copyBtnHTML}
           </header>
           <div class="markdown-body">${html}</div>
         </article>
@@ -745,6 +997,23 @@
     // Show welcome
     function showWelcome() {
       content.innerHTML = welcomeHTML;
+
+      // Add click handlers for thumbnail cards
+      document.querySelectorAll('.thumbnail-card').forEach(card => {
+        card.addEventListener('click', async () => {
+          const file = card.dataset.file;
+          if (file) {
+            // Update sidebar active state
+            document.querySelectorAll('.nav-item').forEach(item => {
+              item.classList.remove('active');
+              if (item.dataset.file === file) {
+                item.classList.add('active');
+              }
+            });
+            await displayContent(file);
+          }
+        });
+      });
     }
 
     // Handle navigation clicks
